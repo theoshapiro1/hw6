@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Jade Delight</title>
+</head>
+
+<body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+
+function MenuItem(name, cost)
+{
+	this.name = name;
+	this.cost=cost;
+}
+
+menuItems = new Array(
+	new MenuItem("Chicken Chop Suey", 5.5),
+	new MenuItem("Sweet and Sour Pork", 7.25),
+	new MenuItem("Shrimp Lo Mein", 6.80),
+	new MenuItem("Moo Shi Chicken", 9.50),
+	new MenuItem("Fried Rice", 3.25)
+);
+
+function makeSelect(name, minRange, maxRange)
+{
+	var t= "";
+	t = "<select name='" + name + "' size='1'>";
+	for (j=minRange; j<=maxRange; j++)
+	   t += "<option>" + j + "</option>";
+	t+= "</select>"; 
+	return t;
+}
+
+function td(content, className="")
+{
+	return "<td class = '" + className + "'>" + content + "</td>";
+}
+	
+</script>
+
+<h1>Jade Delight</h1>
+<form>
+	<table>
+		<tr>
+			<td><p class="userInfo"><label>First Name:</label> </td>
+			<td><input type="text"  name='fname' /></p></td>
+		</tr>
+		<tr>
+			<td><p class="userInfo"><label>Last Name*:</label> </td>
+			<td><input type="text"  name='lname' /></p></td>
+		</tr>
+		<tr id = "streetAddress" hidden = "true">
+			<td><p class="userInfo address"><label>Street*:</label></td>
+			<td><input type="text" name='street' /></p></td>
+		</tr>
+		<tr id = "cityAddress" hidden = "true">
+			<td><p class="userInfo address"><label>City*:</label></td>
+			<td><input type="text" name='city' /></p></td>
+		</tr>
+		<tr>
+			<td><p class="userInfo"><label>Phone*:</label></td>
+			<td><input type="text"  name='phone' /></p></td>
+		</tr>
+	</table>
+<p>
+		<script>
+			function hideAddress() {
+				document.getElementById('cityAddress').hidden = true;
+				document.getElementById('streetAddress').hidden = true;
+			}
+			function showAddress() {
+				document.getElementById('cityAddress').hidden = false;
+				document.getElementById('streetAddress').hidden = false;
+			}
+		</script>
+		<input type="radio"  name="p_or_d" id = 'pickupp' value = "pickup" checked="checked" onclick="hideAddress()"/>Pickup  
+		<input type="radio"  name='p_or_d' id = 'deliveryy' value = 'delivery' onclick = "showAddress()"/>
+		Delivery
+	</p>
+<table border="0" cellpadding="3">
+  <tr>
+    <th>Select Item</th>
+    <th>Item Name</th>
+    <th>Cost Each</th>
+    <th>Total Cost</th>
+  </tr>
+<script>
+
+  var s = "";
+  for (i=0; i< menuItems.length; i++)
+  {
+	  s += "<tr>";
+	  s += td(makeSelect("quan" + i, 0, 10),"selectQuantity");
+	  s += td(menuItems[i].name, "itemName");
+	  s += td("$" +menuItems[i].cost.toFixed(2), "cost");
+	  s += td("$<input type='text' name='cost'/>", "totalCost");
+	  s+= "</tr>";
+  }
+  document.writeln(s);
+</script>
+</table>
+<p class="subtotal totalSection"><label>Subtotal</label>: 
+   $ <input type="text"  name='subtotal' id="subtotal" />
+</p>
+<p class="tax totalSection"><label>Mass tax 6.25%:</label>
+  $ <input type="text"  name='tax' id="tax" />
+</p>
+<p class="total totalSection"><label>Total:</label> $ <input type="text"  name='total' id="total" />
+</p>
+
+<input type = "submit" value = "Submit Order" />
+
+
+<script>
+	var chickenChopSuey = 0;
+	var sweetAndSour = 0;
+	var shrimpLoMein = 0;
+	var mooShiChicken = 0;
+	var friedRice = 0;
+
+	var result0 = 0;
+	var result1 = 0;
+	var result2 = 0;
+	var result3 = 0;
+	var result4 = 0;
+
+	var subTotal = 0;
+	var massTax = 0;
+	var total = 0;
+
+
+	function updateCosts() {
+							
+		$('[name="quan0"]').on('change', function() { 
+			chickenChopSuey = $('[name="quan0"]').val();
+			chickenChopSuey = parseInt(chickenChopSuey);
+			result0 = (chickenChopSuey*5.50);
+			document.forms[0].cost[0].value= result0.toFixed(2);
+			updateTotals();
+		})
+		$('[name="quan1"]').on('change', function() { 
+			sweetAndSour = $('[name="quan1"]').val();
+			sweetAndSour = parseInt(sweetAndSour);
+			result1 = (sweetAndSour*7.25);
+			document.forms[0].cost[1].value= result1.toFixed(2);
+			updateTotals();
+		})
+		$('[name="quan2"]').on('change', function() { 
+			shrimpLoMein = $('[name="quan2"]').val();
+			shrimpLoMein = parseInt(shrimpLoMein);
+			result2 = (shrimpLoMein*6.80);
+			document.forms[0].cost[2].value= result2.toFixed(2);
+			updateTotals();
+		})
+		$('[name="quan3"]').on('change', function() { 
+			mooShiChicken = $('[name="quan3"]').val();
+			mooShiChicken = parseInt(mooShiChicken);
+			result3 = (mooShiChicken*9.50);
+			document.forms[0].cost[3].value= result3.toFixed(2);
+			updateTotals();
+		})
+		$('[name="quan4"]').on('change', function() { 
+			friedRice = $('[name="quan4"]').val();
+			friedRice = parseInt(friedRice);
+			result4 = (friedRice*3.25);
+			document.forms[0].cost[4].value= result4.toFixed(2);
+			updateTotals();
+		})
+
+	}
+	//help from TA Matt
+
+	function updateTotals() {
+		subTotal = result0 + result1 + result2 + result3 + result4;
+		massTax = .0625 * subTotal 
+		total = subTotal + massTax;
+		//help from TA Grace
+		let subTotalFormatted = subTotal.toFixed(2);
+		let massTaxFormatted = massTax.toFixed(2);
+		let totalFormatted = total.toFixed(2);
+
+		document.getElementById("subtotal").value = subTotalFormatted;
+		document.getElementById("tax").value = massTaxFormatted;
+		document.getElementById("total").value = totalFormatted;
+	}
+
+	updateCosts();
+
+	function validate() {
+		$("form").submit(function (event) {
+
+		if ($("input[name='lname']").val() == "") {
+			alert("Last Name Required");
+		}	
+
+		else if ($("input[name='subtotal']").val() == ""){
+		 errorFree = false;
+		 alert("At least one item must be ordered ")
+		}
+
+		else {
+			alert("Thank you for your order")
+			alert("Chicken Chop Suey Quantity: " + chickenChopSuey + ", $" + result0 + "\n" + "Sweet and Sour Pork Quantity: " + sweetAndSour + ", $" + result1 + "\n" + "Shrimp Lo Mein Quantity: " + shrimpLoMein + ", $" + result2 + "\n" + "Moo Shi Chicken Quantity: " + mooShiChicken + ", $" + result3 + "\n" + "Fried Rice Quantity: " + friedRice + ", $" + result4 + "\n\n" + "Subtotal: $" + subTotal + "\n" + "Mass tax: $" + massTax + "\n" + "Total: $" + total)
+
+		}
+		})
+
+	
+
+}
+	validate();
+
+
+	
+</script>
+
+</form>
+</body>
+</html>
